@@ -1,5 +1,7 @@
 package com.zapskiller.automation.config;
 
+import com.zapskiller.automation.utils.UIAutomationUtils;
+import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.*;
@@ -17,11 +19,13 @@ import java.util.Properties;
 public class Hooks {
 
     private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
-    // SELENIUM WEBDRIVER INSTANCE
+    public WebDriver driver;
+    // TEMPORARY
+    public UIAutomationUtils utils = new UIAutomationUtils();
 
     @BeforeSuite
     public void beforeSuite() {
-        this.readConfig();
+        UIAutomationUtils.readConfig();
     }
 
     @BeforeClass
@@ -31,7 +35,7 @@ public class Hooks {
 
     @BeforeTest
     public void beforeTest() {
-        System.out.println("Before Test...");
+        utils.launchBrowser();
     }
 
     @BeforeMethod
@@ -46,7 +50,7 @@ public class Hooks {
 
     @AfterTest
     public void AfterTest() {
-        System.out.println("After Test...");
+        utils.closeBrowser();
     }
 
     @AfterClass
@@ -63,16 +67,5 @@ public class Hooks {
      * <p>This method is responsible for reading configuration parameters from a resource file</p>
      * @Version 1.0
      */
-    public void readConfig() {
-        try {
-            FileInputStream fis = new FileInputStream(new File("src/test/resources/config-qa.properties"));
-            Properties properties = new Properties();
-            properties.load(fis);
-            System.out.println(properties.getProperty("browser"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
 
 }
