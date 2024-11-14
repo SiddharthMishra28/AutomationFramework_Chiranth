@@ -19,9 +19,7 @@ import java.util.Properties;
 public class Hooks {
 
     private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
-    public WebDriver driver;
-    // TEMPORARY
-    public UIAutomationUtils utils = new UIAutomationUtils();
+
 
     @BeforeSuite
     public void beforeSuite() {
@@ -35,7 +33,7 @@ public class Hooks {
 
     @BeforeTest
     public void beforeTest() {
-        utils.launchBrowser();
+        UIAutomationUtils.launchBrowser();
     }
 
     @BeforeMethod
@@ -50,7 +48,7 @@ public class Hooks {
 
     @AfterTest
     public void AfterTest() {
-        utils.closeBrowser();
+        UIAutomationUtils.closeBrowser();
     }
 
     @AfterClass

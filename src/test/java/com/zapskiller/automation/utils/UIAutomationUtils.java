@@ -18,8 +18,8 @@ import java.util.Properties;
 public class UIAutomationUtils {
 
     public static Properties configProps = readConfig();
-    public WebDriver driver;
-    public ChromeOptions options = new ChromeOptions();
+    public static WebDriver driver;
+    public static ChromeOptions options = new ChromeOptions();
 
     /**
      * <p>Reads a properties / config file and its properties</p>
@@ -41,7 +41,7 @@ public class UIAutomationUtils {
      * <p>Launches a browser based on provided config params</p>
      * @Version 1.0
      */
-    public void launchBrowser() {
+    public static void launchBrowser() {
         if(configProps.getProperty("browser").equalsIgnoreCase("CHROME")){
             if(configProps.getProperty("browser.chrome.options.headless").equalsIgnoreCase("true")) {
                 options.addArguments("--headless");
@@ -54,7 +54,7 @@ public class UIAutomationUtils {
      * <p>Terminates webdriver session</p>
      * @Version 1.0
      */
-    public void closeBrowser() {
+    public static void closeBrowser() {
         driver.quit();
     }
 
