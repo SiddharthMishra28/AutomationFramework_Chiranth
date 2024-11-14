@@ -2,6 +2,8 @@ package com.zapskiller.automation.config;
 
 import com.zapskiller.automation.utils.UIAutomationUtils;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.*;
@@ -19,11 +21,14 @@ import java.util.Properties;
 public class Hooks {
 
     private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
+    public static Properties configProps;
+    public ChromeOptions options = new ChromeOptions();
+    public WebDriver driver;
 
 
     @BeforeSuite
     public void beforeSuite() {
-        UIAutomationUtils.readConfig();
+        configProps = UIAutomationUtils.readConfig();
     }
 
     @BeforeClass
@@ -33,7 +38,7 @@ public class Hooks {
 
     @BeforeTest
     public void beforeTest() {
-        UIAutomationUtils.launchBrowser();
+        launchBrowser();
     }
 
     @BeforeMethod
@@ -48,7 +53,7 @@ public class Hooks {
 
     @AfterTest
     public void AfterTest() {
-        UIAutomationUtils.closeBrowser();
+        closeBrowser();
     }
 
     @AfterClass
@@ -62,8 +67,24 @@ public class Hooks {
     }
 
     /**
-     * <p>This method is responsible for reading configuration parameters from a resource file</p>
+     * <p>Launches a browser based on provided config params</p>
      * @Version 1.0
      */
+    public void launchBrowser() {
+        if(configProps.getProperty("browser").equalsIgnoreCase("CHROME")){
+            if(configProps.getProperty("browser.chrome.options.headless").equalsIgnoreCase("true")) {
+                options.addArguments("--headless");
+            }
+            driver = new ChromeDriver(options);
+        }
+    }
+
+    /**
+     * <p>Terminates webdriver session</p>
+     * @Version 1.0
+     */
+    public void closeBrowser() {
+        driver.quit();
+    }
 
 }

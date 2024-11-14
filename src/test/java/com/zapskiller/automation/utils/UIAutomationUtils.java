@@ -1,13 +1,16 @@
 package com.zapskiller.automation.utils;
 
+import com.zapskiller.automation.config.Hooks;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Properties;
 
 /**
@@ -17,9 +20,12 @@ import java.util.Properties;
  */
 public class UIAutomationUtils {
 
-    public static Properties configProps = readConfig();
-    public static WebDriver driver;
-    public static ChromeOptions options = new ChromeOptions();
+    public WebDriver driver;
+    public WebDriverWait wait;
+
+    public UIAutomationUtils(WebDriver driver) {
+        this.driver = driver;
+    }
 
     /**
      * <p>Reads a properties / config file and its properties</p>
@@ -38,32 +44,12 @@ public class UIAutomationUtils {
     }
 
     /**
-     * <p>Launches a browser based on provided config params</p>
-     * @Version 1.0
-     */
-    public static void launchBrowser() {
-        if(configProps.getProperty("browser").equalsIgnoreCase("CHROME")){
-            if(configProps.getProperty("browser.chrome.options.headless").equalsIgnoreCase("true")) {
-                options.addArguments("--headless");
-            }
-            driver = new ChromeDriver(options);
-        }
-    }
-
-    /**
-     * <p>Terminates webdriver session</p>
-     * @Version 1.0
-     */
-    public static void closeBrowser() {
-        driver.quit();
-    }
-
-    /**
      * <p>Clicks on provided web element</p>
      * @param element
      * @Version 1.0
      */
     public void clickElement(By element) {
+//        waitForElementVisibility(element);
         driver.findElement(element).click();
     }
 
@@ -74,5 +60,26 @@ public class UIAutomationUtils {
      */
     public void navigateToUrl(String url) {
         driver.get(url);
+    }
+
+    /**
+     * <p>Waits for Visibility of WebElement for configured number of seconds</p>
+     * @param locator
+     * @Version 1.0
+     */
+    public void waitForElementVisibility(By locator) {
+        wait = new WebDriverWait(driver, Duration.ofSeconds(Long.parseLong(Hooks.configProps.getProperty("webdriver.wait.inseconds"))));
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
+    /**
+     * <p>Types or Sends Keystrokes to the mentioned Input Field</p>
+     * @param locator
+     * @param value
+     * @Version 1.0
+     */
+    public void typeIntoField(By locator, String value) {
+        waitForElementVisibility(locator);
+        driver.findElement(locator).sendKeys(value);
     }
 }
