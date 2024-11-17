@@ -1,6 +1,9 @@
 package com.zapskiller.automation.utils;
 
 import com.zapskiller.automation.config.Hooks;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -9,9 +12,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Date;
 import java.util.Properties;
+
+import static com.zapskiller.automation.config.Hooks.configProps;
 
 /**
  * <p>This class contains re-usable methods for standard execution steps which are specific to UI Test automation</p>
@@ -22,6 +30,7 @@ public class UIAutomationUtils {
 
     public WebDriver driver;
     public WebDriverWait wait;
+    public static FileInputStream fis;
 
     public UIAutomationUtils(WebDriver driver) {
         this.driver = driver;
@@ -68,7 +77,7 @@ public class UIAutomationUtils {
      * @Version 1.0
      */
     public void waitForElementVisibility(By locator) {
-        wait = new WebDriverWait(driver, Duration.ofSeconds(Long.parseLong(Hooks.configProps.getProperty("webdriver.wait.inseconds"))));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(Long.parseLong(configProps.getProperty("webdriver.wait.inseconds"))));
         wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
@@ -81,5 +90,37 @@ public class UIAutomationUtils {
     public void typeIntoField(By locator, String value) {
         waitForElementVisibility(locator);
         driver.findElement(locator).sendKeys(value);
+    }
+
+    /**
+     * <p>Reads test data from a source and converts the same to 2D Array of values</p>
+     * @param filePath
+     * @param tabName
+     * @return
+     */
+    public static String[][] readTestData(String filePath, String tabName) {
+        try {
+            fis = new FileInputStream(new File(filePath));
+            DataFormatter formatter  = new DataFormatter();
+            Workbook wb = new XSSFWorkbook(fis);
+            Sheet sheet = wb.getSheet(tabName);
+            int rowCount = sheet.getLastRowNum();
+            for(int i=1; i<=rowCount; i++) {
+                int colCount = sheet.getRow(i).getLastCellNum();
+                for(int j=0; j<colCount; j++) {
+                    Cell cell = sheet.getRow(i).getCell(j);
+                    if(cell.getCellType() == CellType.NUMERIC) {
+                        Date date = cell.getDateCellValue();
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/YY");
+                        String formatterDate = simpleDateFormat.format(date);
+                        System.out.println(formatterDate);
+                    }
+                    System.out.println(sheet.getRow(i).getCell(j).getStringCellValue());
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e); // Use Logger Statements here as per requirement
+        }
+        return null;
     }
 }

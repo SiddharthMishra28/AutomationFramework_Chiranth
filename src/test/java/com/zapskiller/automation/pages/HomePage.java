@@ -15,6 +15,13 @@ public class HomePage extends UIAutomationUtils {
         this.driver = driver;
     }
 
-
-
+    /**
+     * <p>Starts registration process</p>
+     * @param url
+     */
+    public void startRegistrationProcess(String url) {
+        navigateToUrl(url);
+        clickElement(signInLink);
+        clickElement(registerLink);
+    }
 }
