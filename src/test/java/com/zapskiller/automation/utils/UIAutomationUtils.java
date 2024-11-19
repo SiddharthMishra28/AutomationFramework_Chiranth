@@ -105,22 +105,18 @@ public class UIAutomationUtils {
             Workbook wb = new XSSFWorkbook(fis);
             Sheet sheet = wb.getSheet(tabName);
             int rowCount = sheet.getLastRowNum();
+            int colCount = sheet.getRow(0).getLastCellNum();
+            String[][] data = new String[rowCount][colCount];
             for(int i=1; i<=rowCount; i++) {
-                int colCount = sheet.getRow(i).getLastCellNum();
                 for(int j=0; j<colCount; j++) {
                     Cell cell = sheet.getRow(i).getCell(j);
-                    if(cell.getCellType() == CellType.NUMERIC) {
-                        Date date = cell.getDateCellValue();
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/YY");
-                        String formatterDate = simpleDateFormat.format(date);
-                        System.out.println(formatterDate);
-                    }
-                    System.out.println(sheet.getRow(i).getCell(j).getStringCellValue());
+                    String cellValue = formatter.formatCellValue(cell);
+                    data[i-1][j] = cellValue;
                 }
             }
+            return data;
         } catch (IOException e) {
             throw new RuntimeException(e); // Use Logger Statements here as per requirement
         }
-        return null;
     }
 }

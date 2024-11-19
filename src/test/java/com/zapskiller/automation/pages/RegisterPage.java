@@ -15,6 +15,8 @@ public class RegisterPage extends UIAutomationUtils {
     public By birthDate = By.id("field-birthday");
     public By termsCheckbox = By.name("psgdpr");
     public By customerProvacyCheckbox = By.name("customer_privacy");
+    public By saveButton = By.xpath("//button[contains(text(), 'Save')]");
+//    public String dynamicButton = "//button[text()='$name']";
 
     public RegisterPage(WebDriver driver) {
         super(driver);
@@ -39,6 +41,8 @@ public class RegisterPage extends UIAutomationUtils {
         typeIntoField(this.birthDate, birthDate);
         clickElement(termsCheckbox);
         clickElement(customerProvacyCheckbox);
+        clickElement(this.saveButton);
+//        clickElement(By.xpath(dynamicButton.replace("$name", "")));
     }
 
 }

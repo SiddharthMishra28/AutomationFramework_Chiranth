@@ -76,6 +76,7 @@ public class Hooks {
                 options.addArguments("--headless");
             }
             driver = new ChromeDriver(options);
+            driver.manage().window().maximize();
         }
     }
 
