@@ -49,11 +49,10 @@ public class Execution {
         switch (locator_type) {
             case "XPATH":
                 return driver.findElement(By.xpath(locator_text));
-                break;
 
             case "ID":
                 return driver.findElement(By.id(locator_text));
-                break;
         }
+        return null;
     }
 }
