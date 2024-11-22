@@ -11,7 +11,7 @@ public class DatabaseConsole {
         try {
             Server server = Server.createWebServer("-webAllowOthers", "-webPort", "8000").start();
             Server.createTcpServer("-tcpAllowOthers", "-tcpPort", "9092").start();
-            String jdbcUrl = "jdbc:h2:mem:testdb";
+            String jdbcUrl = "jdbc:h2:file:"+System.getProperty("user.dir")+"/data/db";
             Connection connection = DriverManager.getConnection(jdbcUrl, "sa", "");
         } catch (SQLException e) {
             throw new RuntimeException(e);
