@@ -59,7 +59,7 @@ public class Hooks {
 
     @BeforeMethod
     public void beforeMethod() {
-        test = extentReports.createTest();
+        test = extentReports.createTest("Sample Test");
     }
 
     @AfterMethod
