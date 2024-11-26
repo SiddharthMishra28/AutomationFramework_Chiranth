@@ -1,16 +1,23 @@
 package com.zapskiller.automation.config;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.aventstack.extentreports.reporter.configuration.ExtentSparkReporterConfig;
+import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.zapskiller.automation.utils.UIAutomationUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.ITestContext;
 import org.testng.annotations.*;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Properties;
 
 /**
@@ -24,11 +31,20 @@ public class Hooks {
     public static Properties configProps;
     public ChromeOptions options = new ChromeOptions();
     public WebDriver driver;
+    public ExtentReports extentReports = new ExtentReports();
+    public ExtentSparkReporter reporter;
+    public ExtentTest test;
 
 
     @BeforeSuite
     public void beforeSuite() {
         configProps = UIAutomationUtils.readConfig();
+        reporter = new ExtentSparkReporter(configProps.getProperty("reporting.location"));
+        extentReports.attachReporter(reporter);
+        reporter.config(ExtentSparkReporterConfig.builder()
+                .documentTitle(configProps.getProperty("report.title"))
+                .theme(Theme.DARK)
+                .reportName(configProps.getProperty("report.name")).build());
     }
 
     @BeforeClass
@@ -43,7 +59,7 @@ public class Hooks {
 
     @BeforeMethod
     public void beforeMethod() {
-        System.out.println("Before Method...");
+        test = extentReports.createTest();
     }
 
     @AfterMethod
@@ -64,6 +80,7 @@ public class Hooks {
     @AfterSuite
     public void afterSuite() {
         System.out.println("After Suite...");
+        extentReports.flush();
     }
 
     /**
