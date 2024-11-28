@@ -33,15 +33,15 @@ public class RegisterPage extends UIAutomationUtils {
      * @param birthDate
      */
     public void registerNewUser(String socialTitle,  String firstName, String lastName, String email, String password, String birthDate) {
-        clickElement(this.socialTitle);
+        clickElement(this.socialTitle, "Social Title");
         typeIntoField(this.firstName, firstName);
         typeIntoField(this.lastName, lastName);
         typeIntoField(this.email, email);
         typeIntoField(this.password, password);
         typeIntoField(this.birthDate, birthDate);
-        clickElement(termsCheckbox);
-        clickElement(customerProvacyCheckbox);
-        clickElement(this.saveButton);
+        clickElement(termsCheckbox, "Terms Checkbox");
+        clickElement(customerProvacyCheckbox, "Privacy checkbox");
+        clickElement(this.saveButton, "Save Button");
 //        clickElement(By.xpath(dynamicButton.replace("$name", "")));
     }
 

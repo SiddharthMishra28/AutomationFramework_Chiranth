@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
     <suite name="All Test Suite">
-        <test verbose="2" preserve-order="true" name="D:/intellij-projects/SeleniumAutomationFramework/src/test/java/com/zapskiller/automation/testcases"><classes><class name="com.zapskiller.automation.testcases.RegistrationTest">
+    <listeners>
+        <listener class-name="com.zapskiller.automation.reporting.ReportListener"></listener>
+    </listeners>
+        <test verbose="2" preserve-order="true" name="D:/intellij-projects/SeleniumAutomationFramework/src/test/java/com/zapskiller/automation/testcases"><classes><class name="com.zapskiller.automation.testcases.regression.RegistrationTest">
             <methods><include name="register_new_user_test"/>
                 <include name="fakeDataTest"/>
             </methods>

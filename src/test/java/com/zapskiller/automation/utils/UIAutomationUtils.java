@@ -1,6 +1,8 @@
 package com.zapskiller.automation.utils;
 
+import com.aventstack.extentreports.Status;
 import com.zapskiller.automation.config.Hooks;
+import com.zapskiller.automation.reporting.ReportListener;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -57,9 +59,10 @@ public class UIAutomationUtils {
      * @param element
      * @Version 1.0
      */
-    public void clickElement(By element) {
+    public void clickElement(By element, String elementName) {
 //        waitForElementVisibility(element);
         driver.findElement(element).click();
+        ReportListener.test.log(Status.INFO, "Clicking on WebElement "+elementName);
     }
 
     /**
@@ -69,6 +72,7 @@ public class UIAutomationUtils {
      */
     public void navigateToUrl(String url) {
         driver.get(url);
+        ReportListener.test.log(Status.INFO, "Navigating to "+url);
     }
 
     /**

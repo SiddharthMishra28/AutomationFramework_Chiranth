@@ -21,7 +21,7 @@ public class HomePage extends UIAutomationUtils {
      */
     public void startRegistrationProcess(String url) {
         navigateToUrl(url);
-        clickElement(signInLink);
-        clickElement(registerLink);
+        clickElement(signInLink, "Sign-in Link");
+        clickElement(registerLink, "Register Link");
     }
 }
