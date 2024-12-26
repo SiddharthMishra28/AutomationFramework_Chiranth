@@ -1,26 +1,23 @@
 package com.zapskiller.automation.steps;
 
-import com.zapskiller.automation.config.Hooks;
-import io.cucumber.java.BeforeAll;
-import io.cucumber.java.BeforeStep;
+import com.zapskiller.automation.utils.UIAutomationUtils;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class BaseSteps {
 
-    @Given("I boot up the framework")
-    public void i_boot_up_the_framework() {
-        System.out.println("Framework Booted...");
+    UIAutomationUtils utils = new UIAutomationUtils();
+    @Given("I navigate to {string}")
+    public void i_navigate_to(String url) {
+        utils.navigateToUrl(url);
     }
+    @When("I type {string} into {string} in {string}")
+    public void i_type_into_in(String searchTerm, String element, String pageName) {
 
-    @When("I execute a scenario from feature")
-    public void i_execute_a_scenario_from_feature() {
-        System.out.println("Step Execution started..");
     }
+    @Then("I should be able to search the results")
+    public void i_should_be_able_to_search_the_results() {
 
-    @Then("The Test Should execute successfully")
-    public void the_test_should_execute_successfully() {
-        System.out.println("Step Executed Successfully");
     }
 }
