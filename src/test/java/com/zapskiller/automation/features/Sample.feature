@@ -4,6 +4,7 @@ Feature: Sample Feature File for Cucumber Framework Test
 
   @sanity
   Scenario: Google Homepage Navigation and Search Test
-    Given I navigate to "https://www.yahoo.com"
-    When I type "Automation" into "SearchFile" in "Homepage"
-    Then I should be able to search the results
+#    Given I navigate to "https://www.yahoo.com"
+    When I type "Automation" into "searchInputBox" in "Homepage"
+    When I type "testuser" into "userid" in "loginpage"
+#    Then I should be able to search the results

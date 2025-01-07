@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -42,10 +43,9 @@ public class UIAutomationUtils extends Hooks {
 
     /**
      * <p>Clicks on Provided Web Element reference</p>
-     * @param element
      */
-    public void clickElement(By element) {
-        driver.findElement(element).click();
+    public void clickElement(String page, String locator) {
+        driver.findElement(parseRepository(page, locator)).click();
     }
 
     /**
@@ -53,7 +53,39 @@ public class UIAutomationUtils extends Hooks {
      * @param element
      * @param keyStrokes
      */
-    public void type(By element, String keyStrokes) {
-        driver.findElement(element).sendKeys(keyStrokes);
+    public void type(String page, String element, String keyStrokes) {
+        driver.findElement(parseRepository(page, element)).sendKeys(keyStrokes);
+    }
+
+    public By parseRepository(String page, String element) {
+        Properties readRepository = readRepository(page);
+        String elemRef = readRepository.getProperty(element);
+        String locatorType = elemRef.split(":")[0];
+        String locatorValue = elemRef.split(":")[1];
+        switch (locatorType.toUpperCase()) {
+            case "NAME":
+                return By.name(locatorValue);
+
+            case "ID":
+                return By.id(locatorValue);
+        }
+        return null;
+    }
+
+    public Properties readRepository(String repoName) {
+        repoName = repoName.toLowerCase();
+        System.out.println(repoName);
+        String baseDirectory = "src/test/java/com/zapskiller/automation/repository";
+        System.out.println(baseDirectory);
+        try {
+            FileInputStream fis = new FileInputStream(new File(baseDirectory+"/"+repoName+".properties"));
+            Properties properties = new Properties();
+            properties.load(fis);
+            return properties;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

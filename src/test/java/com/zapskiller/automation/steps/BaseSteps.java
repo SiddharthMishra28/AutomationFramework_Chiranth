@@ -14,8 +14,9 @@ public class BaseSteps {
     }
     @When("I type {string} into {string} in {string}")
     public void i_type_into_in(String searchTerm, String element, String pageName) {
-
+        utils.type(pageName, element, searchTerm);
     }
+
     @Then("I should be able to search the results")
     public void i_should_be_able_to_search_the_results() {
 
